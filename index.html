@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>당신의 습관 관리는 안녕하신가요?</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .card-title {
+            font-size: 1.75rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .card-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .question-container {
+            margin-bottom: 2rem;
+        }
+
+        .question-count {
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+        }
+
+        .question-text {
+            font-size: 1.25rem;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+            color: white;
+            min-width: 120px;
+        }
+
+        .btn-yes {
+            background: #4CAF50;
+        }
+
+        .btn-yes:hover {
+            background: #43A047;
+        }
+
+        .btn-no {
+            background: #9E9E9E;
+        }
+
+        .btn-no:hover {
+            background: #757575;
+        }
+
+        .result-container {
+            text-align: center;
+        }
+
+        .result-icon {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #2d3748;
+        }
+
+        .result-message {
+            color: #4a5568;
+            margin-bottom: 2rem;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .score-text {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: #2d3748;
+        }
+
+        .cta-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            color: white;
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            transition: all 0.3s;
+            font-size: 1.1rem;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .reset-button {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            color: white;
+            background: #9E9E9E;
+            transition: all 0.3s;
+            font-size: 1rem;
+        }
+
+        .reset-button:hover {
+            background: #757575;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 1.5rem;
+            }
+
+            .card-title {
+                font-size: 1.5rem;
+            }
+
+            .question-text {
+                font-size: 1.1rem;
+            }
+
+            .btn {
+                padding: 0.75rem 1.5rem;
+                font-size: 1rem;
+            }
+
+            .cta-button .desktop-text {
+                display: none;
+            }
+
+            .cta-button .mobile-text {
+                display: inline;
+            }
+        }
+
+        @media (min-width: 641px) {
+            .cta-button .desktop-text {
+                display: inline;
+            }
+
+            .cta-button .mobile-text {
+                display: none;
+            }
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e2e8f0;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #4CAF50, #2196F3);
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="card-header">
+            <h1 class="card-title">당신의 습관 관리는 안녕하신가요?</h1>
+            <p class="card-subtitle">함께라면 더 특별한 성장이 시작됩니다</p>
+        </div>
+        <div id="quiz-container">
+            <!-- 콘텐츠는 JavaScript로 동적 생성됨 -->
+        </div>
+    </div>
+
+    <script>
+        const questions = [
+            "아침에 일어나는 시간이 일정한가요?",
+            "매일 해야 할 일들의 목록을 가지고 있나요?",
+            "새로운 습관을 시작할 때 작은 목표부터 시작하나요?",
+            "이루고 싶은 큰 목표나 꿈이 있나요?",
+            "매일 꾸준하게 노력해서 목표를 달성하신적이 있나요?",
+            "작은 습관을 통해 큰 목표를 이루신 적이 있나요?",
+            "목표 달성을 기록하는 방법이 있나요?",
+            "실패했을 때 다시 시작할 수 있는 자신만의 방법이 있나요?",
+            "혼자서도 습관을 잘 만들고 지키고 계신가요?",
+            "목표 달성을 위해 함께 격려해주는 동료가 있나요?"
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function showQuestion() {
+            const container = document.getElementById('quiz-container');
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            
+            container.innerHTML = `
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+                <div class="question-container">
+                    <div class="question-count">Question ${currentQuestion + 1} / ${questions.length}</div>
+                    <div class="question-text">${questions[currentQuestion]}</div>
+                    <div class="button-container">
+                        <button class="btn btn-yes" onclick="handleAnswer(true)">예</button>
+                        <button class="btn btn-no" onclick="handleAnswer(false)">아니오</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        const questionScores = [8, 8, 8, 10, 12, 12, 10, 10, 10, 12]; // 각 질문별 배점
+
+        function handleAnswer(isYes) {
+            if (isYes) score += questionScores[currentQuestion];
+            
+            if (currentQuestion < questions.length - 1) {
+                currentQuestion++;
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function getResult() {
+            const percentage = score; // 이미 100점 만점으로 계산됨
+            
+            if (percentage >= 90) {
+                return {
+                    icon: '✨',
+                    title: '습관 관리의 달인 (90-100점)',
+                    message: '놀라운 습관 관리 능력을 가지고 계시네요! 혼자서도 잘 해내고 계시지만, 해비팅 캠프에서는 당신과 같은 열정을 가진 분들과 함께하며 더 큰 성장을 이룰 수 있어요. 서로의 경험을 나누고 함께 성장하는 특별한 여정을 시작해보세요!',
+                    color: '#4CAF50'
+                };
+            } else if (percentage >= 75) {
+                return {
+                    icon: '💪',
+                    title: '습관 관리의 고수 (75-89점)',
+                    message: '체계적인 습관 관리를 하고 계시는군요! 해비팅 캠프에서는 검증된 시스템과 함께하는 동료들이 당신의 여정을 더욱 풍성하게 만들어줄 거예요. 혼자가 아닌 함께일 때 습관은 더 강해지고, 목표는 더 가까워집니다. 새로운 도전을 시작해보세요!',
+                    color: '#2196F3'
+                };
+            } else if (percentage >= 60) {
+                return {
+                    icon: '🌱',
+                    title: '습관 관리의 실천가 (60-74점)',
+                    message: '습관 관리를 위해 꾸준히 노력하고 계시네요! 좋은 습관을 만드는 것은 결코 쉽지 않죠. 해비팅 캠프에서는 비슷한 목표를 가진 동료들과 함께하며, 서로의 성장을 응원하고 격려하며 한 걸음씩 나아갑니다. 함께라면 분명 더 멀리 갈 수 있어요!',
+                    color: '#FFC107'
+                };
+            } else {
+                return {
+                    icon: '💝',
+                    title: '습관 관리의 첫걸음 (0-59점)',
+                    message: '습관 관리의 첫걸음을 내딛으셨네요! 모든 위대한 변화는 작은 한 걸음에서 시작됩니다. 해비팅 캠프에서는 당신과 같은 꿈을 가진 동료들과 함께 성장할 수 있어요. 검증된 시스템과 따뜻한 커뮤니티가 당신의 변화를 이끌어줄 거예요. 이제 혼자가 아닌 함께, 새로운 시작을 만들어보세요!',
+                    color: '#FF5722'
+                };
+            }
+        }
+
+        function showResult() {
+            const result = getResult();
+            const container = document.getElementById('quiz-container');
+            
+            container.innerHTML = `
+                <div class="result-container">
+                    <div class="result-icon">${result.icon}</div>
+                    <div class="result-title" style="color: ${result.color}">${result.title}</div>
+                    <div class="result-message">${result.message}</div>
+                    <div class="score-text">당신의 습관 관리 점수: ${score} / 100</div>
+                    <button class="cta-button" onclick="window.open('https://moaform.com/q/Zt8H0a', '_blank')">
+                        <span class="desktop-text">✨ 해비팅 캠프 참여로 성장의 기반 만들기</span>
+                        <span class="mobile-text">✨ 해비팅 캠프 참여하기</span>
+                    </button>
+                    <button class="reset-button" onclick="resetQuiz()">테스트 다시하기</button>
+                </div>
+            `;
+        }
+
+        function resetQuiz() {
+            currentQuestion = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        // 초기 질문 표시
+        showQuestion();
+    </script>
+</body>
+</html>
